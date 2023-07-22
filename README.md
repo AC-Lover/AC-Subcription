@@ -55,7 +55,7 @@ PHP 8.0+
 <sub>Note: If your panel does not use SSL, change https to http in `BASE_URL` line 9</sub><br>
 <sub>Note: If your panel port is 443 or 80, there is no need to enter the port</sub>
 5. Edit `.env` in path `/opt/marzban/` and add `XRAY_SUBSCRIPTION_URL_PREFIX="https://ir-doamin.com"`<br>
-<sub>Note: The .env file is hidden</sub><br>
+<sub>Note: The `.env` file is hidden</sub><br>
 <sub>Note: Put your web host domain address instead of `ir-domain.com`</sub>
 
 
