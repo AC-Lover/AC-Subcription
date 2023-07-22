@@ -43,6 +43,7 @@ if ($isTextHTML){
     document.getElementById('myForm').submit();
 </script>
 <?php
+    return;
 }
 
 $isOK=false;
