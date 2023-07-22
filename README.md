@@ -48,7 +48,7 @@ PHP 8.0+
 
 ### Installation
 
-1. Download the latest version of the [releases](https://github.com/AC-Lover/AC-Subcription/releases)
+1. Download the latest version of the [releases](https://github.com/AC-Lover/AC-Subcription/releases/latest)
 2. Upload to your web host
 3. Unzip the zip file
 4. Edit the file `index.php` in the path `/sub/index.php` and replace the IP address and port of your border panel in `BASE_URL` line 9<br>
