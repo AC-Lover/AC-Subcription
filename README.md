@@ -57,6 +57,7 @@ PHP 8.0+
 5. Edit `.env` in path `/opt/marzban/` and add `XRAY_SUBSCRIPTION_URL_PREFIX="https://ir-doamin.com"`<br>
 <sub>Note: The `.env` file is hidden</sub><br>
 <sub>Note: Put your web host domain address instead of `ir-domain.com`</sub>
+6. Restart Marzban
 
 
 ## Usage
