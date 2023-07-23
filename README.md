@@ -24,7 +24,7 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Usage](#usage)
+* [Customize and Modify Source Code](#customize-and-modify-source-code)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
