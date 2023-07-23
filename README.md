@@ -1,4 +1,8 @@
 <br/>
+<div align="center">
+  <img src="https://github.com/MuhammadAshouri/marzban-templates/blob/dca23a0ecbee84839686a1b928a2dc7e8aba4089/template-01/screenshot.jpg" alt="screenshot" width="512" height="auto">
+</div>
+
 <p align="center">
   <h3 align="center">AC Subcription</h3>
 
@@ -51,8 +55,8 @@ PHP 8.0+
 1. Download the latest version of the [releases](https://github.com/AC-Lover/AC-Subcription/releases/latest)
 2. Upload to your web host
 3. Unzip the zip file
-4. Edit the file `index.php` in the path `/sub/index.php` and replace the IP address and port of your border panel in `BASE_URL` line 9<br>
-<sub>Note: If your panel does not use SSL, change https to http in `BASE_URL` line 9</sub><br>
+4. Edit the file `index.php` in the path `/sub/index.php` and replace the IP address and port of your border panel in `BASE_URL` line <a href="https://github.com/AC-Lover/AC-Subcription/blob/b8f02880524fdc29894653c4b4f2b703caee0ae5/sub/index.php#L9">9</a><br>
+<sub>Note: If your panel does not use SSL, change https to http in `BASE_URL` line <a href="https://github.com/AC-Lover/AC-Subcription/blob/b8f02880524fdc29894653c4b4f2b703caee0ae5/sub/index.php#L9">9</a></sub><br>
 <sub>Note: If your panel port is 443 or 80, there is no need to enter the port</sub>
 5. Edit `.env` in path `/opt/marzban/` and add `XRAY_SUBSCRIPTION_URL_PREFIX="https://ir-doamin.com"`<br>
 <sub>Note: The `.env` file is hidden</sub><br>
@@ -61,10 +65,10 @@ PHP 8.0+
 
 
 ## Usage
-
-Template preview
-
-<img src="https://github.com/MuhammadAshouri/marzban-templates/blob/dca23a0ecbee84839686a1b928a2dc7e8aba4089/template-01/screenshot.jpg" alt="screenshot" width="800" height="auto">
+* You can change default settings from settings variable in `index.php`, here line <a href="https://github.com/AC-Lover/AC-Subcription/blob/b8f02880524fdc29894653c4b4f2b703caee0ae5/view-service/index.php#L207">207</a>
+* You can also change tutorial from `appsJson` variable in `index.php`, here line <a href="https://github.com/AC-Lover/AC-Subcription/blob/b8f02880524fdc29894653c4b4f2b703caee0ae5/view-service/index.php#L48">48</a><br>
+<sub>For tutorial video, you need to set direct link of video to tutorial of json</sub>
+* To change logo you can change **src** in line <a href="https://github.com/AC-Lover/AC-Subcription/blob/b8f02880524fdc29894653c4b4f2b703caee0ae5/view-service/index.php#L236">236</a>
 
 ## Roadmap
 
