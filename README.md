@@ -64,7 +64,7 @@ PHP 8.0+
 6. Restart Marzban
 
 
-## Usage
+## Customize and Modify Source Code
 * You can change default settings from settings variable in `index.php`, here line <a href="https://github.com/AC-Lover/AC-Subcription/blob/b8f02880524fdc29894653c4b4f2b703caee0ae5/view-service/index.php#L207">207</a>
 * You can also change tutorial from `appsJson` variable in `index.php`, here line <a href="https://github.com/AC-Lover/AC-Subcription/blob/b8f02880524fdc29894653c4b4f2b703caee0ae5/view-service/index.php#L48">48</a><br>
 <sub>For tutorial video, you need to set direct link of video to tutorial of json</sub>
