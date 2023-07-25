@@ -103,3 +103,7 @@ Distributed under the MIT License. See [LICENSE](https://github.com/AC-Lover/AC-
 
 * [Gozargah](https://github.com/Gozargah/Marzban)
 * [Muhammad Ashouri](https://github.com/MuhammadAshouri)
+
+  
+<h1 align="left">Donation</h1>
+<p align="left">https://nowpayments.io/donation/ACLover</p>
