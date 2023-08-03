@@ -16,6 +16,7 @@ function bytesformat($bytes, $precision = 2): string
 
     return round($bytes, $precision) . ' ' . $units[$pow];
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -240,11 +241,11 @@ function bytesformat($bytes, $precision = 2): string
                     </div>
                     <div class="basis-2/3 flex flex-row items-center sm:ltr:pl-9 sm:rtl:pr-9">
                         <div class="data-usage w-full" x-data="progressBar" x-init="Alpine.data( 'progressBar', () => progressBar )">
-                            <div class="dark:text-white text-black text-center"><span class="font-bold" x-text="$t('dataUsage')"></span><span dir="ltr"><?php echo bytesformat($user['used_traffic']).' / '. empty($user['data_limit']) ? '∞' : bytesformat($user['data_limit']); ?></span></div>
+                            <div class="dark:text-white text-black text-center"><span class="font-bold" x-text="$t('dataUsage')"></span><span dir="ltr"><?php echo bytesformat($user['used_traffic']).' / '. (empty($user['data_limit']) ? '∞' : bytesformat($user['data_limit'])); ?></span></div>
                             <div class="bg-gray-200 dark:bg-gray-900 rounded-full h-6 mt-5 drop-shadow-lg" role="progressbar" :aria-valuenow="width" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar rounded-full h-6 text-center dark:text-white text-black text-sm transition leading-6" :class="color" :style="`width: ${width}%; transition: width 2s;`" x-text="`${width}%`"></div>
                             </div>
-                            <div class="dark:text-white text-black mt-10 text-center"><span class="font-bold" x-text="$t('expirationDate')"></span><span dir="ltr" x-data="{expireDate: ''}" x-init="Alpine.data( 'expireDate', expireDate = <?=$expireDateVar?> )" x-text="expireDate"></span></div><!--2023/06/31 10:43:59-->
+                            <div class="dark:text-white text-black mt-10 text-center"><span class="font-bold" x-text="$t('expirationDate')"></span><span dir="ltr" x-data="{expireDate: ''}" x-init="Alpine.data( 'expireDate', expireDate = '<?=$expireDateVar?>' )" x-text="expireDate"></span></div><!--2023/06/31 10:43:59-->
                             <div class="dark:text-white text-black mt-3 text-sm text-center" x-text="resetInterval == 'year' ? $t('resetIntervalYear') : resetInterval == 'month' ? $t('resetIntervalMonth') : resetInterval == 'week' ? $t('resetIntervalWeek') : resetInterval == 'day' ? $t('resetIntervalDay') : ''"></div>
                             <div class="dark:text-white text-black mt-5 text-center"><span class="font-bold" x-text="$t('remainingDays')"></span><span><?php echo empty($user['expire']) ? '∞' : '(' . intval(($user['expire'] - time()) / (24 * 3600)) . ')'; ?></span><span x-text="$t('remainingDaysSufix')"></span></div>
                         </div>
@@ -277,7 +278,7 @@ function bytesformat($bytes, $precision = 2): string
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
                                             </svg>
                                         </div>
-                                        <div class="w-8 h-8 cursor-pointer qr-button" :data-link="<?php echo $user['subscription_url']; ?>">
+                                        <div class="w-8 h-8 cursor-pointer qr-button" :data-link='<?php echo $user['subscription_url']; ?>'>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="stroke-blue-600 dark:hover:stroke-gray-300 hover:stroke-gray-800 transition-colors" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.75v.75h-.75v-.75zM6.75 16.5h.75v.75h-.75v-.75zM16.5 6.75h.75v.75h-.75v-.75zM13.5 13.5h.75v.75h-.75v-.75zM13.5 19.5h.75v.75h-.75v-.75zM19.5 13.5h.75v.75h-.75v-.75zM19.5 19.5h.75v.75h-.75v-.75zM16.5 16.5h.75v.75h-.75v-.75z" />
@@ -400,13 +401,9 @@ function bytesformat($bytes, $precision = 2): string
         };
 
         let qrSize = $( window ).width() > 500 ? $( window ).height() > 500 ? 400 : $( window ).height() - 200 : $( window ).height() > 500 ? $( window ).width() - 100 : $( window ).height() - 200;
-        $(window).resize(function () {
-            $( window ).resize( function ()
-            if ($(window).width() > 500) qrSize = 400;
-            {
-            else qrSize = $(window).width() - 100;
-                qrSize = $( window ).width() > 500 ? $( window ).height() > 500 ? 400 : $( window ).height() - 200 : $( window ).height() > 500 ? $( window ).width() - 100 : $( window ).height() - 200;
-            });
+        $( window ).resize( function ()
+        {
+            qrSize = $( window ).width() > 500 ? $( window ).height() > 500 ? 400 : $( window ).height() - 200 : $( window ).height() > 500 ? $( window ).width() - 100 : $( window ).height() - 200;
         } );
 
         const popup = $( "#popup" );
@@ -503,12 +500,11 @@ function bytesformat($bytes, $precision = 2): string
             else $( document.body ).removeClass( "font-[Vazirmatn]" );
         }
 
-        function changeTheme ( ele )
-        {
+        function changeTheme(ele) {
             settings.darkMode = ele.checked ? 1 : 0;
             localStorage.setItem("dark", settings.darkMode);
-            if ( !ele.checked ) $( document.body ).removeClass( "dark" );
-            else $( document.body ).addClass( "dark" );
+            if (!ele.checked) $(document.body).removeClass("dark");
+            else $(document.body).addClass("dark");
         }
 
         function openSettings ()
