@@ -37,7 +37,6 @@ function bytesformat($bytes, $precision = 2): string
         <?php $expireDateInit = empty($user['expire']) ? '∞' : date('Y-m-d H:i:s', $user['expire']); ?>
         <?php $dataUsage=empty($user['data_limit'])? 100 :(($user['used_traffic']/$user['data_limit']) < 100 ? number_format($user['used_traffic']/$user['data_limit'], 2) : 100);?>
         const resetInterval = "<?php echo $user['data_limit_reset_strategy']; ?>";
-        let darkMode = 1;
         <?php $expireDateVar = empty($user['expire']) ? '∞' : date('Y-m-d H:i:s', $user['expire']);?>
 
         let appsJson = {
@@ -222,7 +221,7 @@ function bytesformat($bytes, $precision = 2): string
         } );
     </script>
 </head>
-<body :class="darkMode == 1 ? 'dark' : ''" x-data>
+<body :class="settings.darkMode == 1 ? 'dark' : ''" x-data>
     <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-main-light dark:bg-main-dark sm:py-6 transition" id="page-container">
         <div class="relative bg-sub-light dark:bg-sub-dark px-6 pt-10 pb-8 shadow-main-sh dark:shadow-main-sh-dark sm:mx-auto sm:rounded-xl sm:px-10 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-0 w-full max-w-2xl">
             <div class="mx-auto max-w-xl">
@@ -237,6 +236,7 @@ function bytesformat($bytes, $precision = 2): string
                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             <span class="text-blue-600 drop-shadow-lg rtl:mr-2 ltr:ml-2" x-text="$t('settings')"></span>
+                            <a class="rounded-md shadow-lg transition duration-300 bg-blue-600 text-white text-center text-lg py-2 w-4/5 cursor-pointer hover:shadow-xl stroke-blue-600" x-text="$t('proxy')" x-show="settings.proxy != ''" x-bind:href="settings.proxy"></a>
                         </span>
                     </div>
                     <div class="basis-2/3 flex flex-row items-center sm:ltr:pl-9 sm:rtl:pr-9">
@@ -314,7 +314,7 @@ function bytesformat($bytes, $precision = 2): string
                             <div class="flex sm:flex-row flex-col">
                                 <div class="sm:basis-1/5 sm:rtl:ml-4 sm:ltr:mr-4">
                                     <ul class="flex sm:flex-col text-sm font-medium text-center" id="apps-tab" data-tabs-toggle="#apps-tabs-content" role="tablist">
-                                        <template x-for="item in Object.getOwnPropertyNames(appsJson)">
+                                        <template x-for="item in Object.keys(appsJson)">
                                             <li class="flex-grow mb-2" role="presentation">
                                                 <button class="inline-block p-4 border-b-2 rounded-t-lg w-full transition" :id="item + '-tab'" :data-tabs-target="'#' + item" type="button" role="tab" :aria-controls="item" aria-selected="false" x-text="item"></button>
                                             </li>
@@ -322,15 +322,15 @@ function bytesformat($bytes, $precision = 2): string
                                     </ul>
                                 </div>
                                 <div id="apps-tabs-content" class="sm:basis-4/5">
-                                    <template x-for="item in Object.getOwnPropertyNames(appsJson)">
+                                    <template x-for="item in Object.keys(appsJson)">
                                         <div class="hidden" :id="item" role="tabpanel" :aria-labelledby="item + '-tab'">
                                             <ul class="list-none p-0 m-0">
-                                                <template x-for="app in Object.getOwnPropertyNames(appsJson[item])">
+                                                <template x-for="app in Object.keys(appsJson[item])">
                                                     <template x-for="subApp in appsJson[item][app].url">
-                                                        <li class="flex px-3 mb-1 justify-between leading-[3.5rem] hover:bg-black/10 rounded-md hover:shadow-lg transition duration-300" x-data="{link: subApp.url}">
+                                                        <li :class="subApp.best ? 'bg-green-600/30 shadow-lg' : 'hover:bg-black/10 hover:shadow-lg'" class="flex px-3 mb-1 justify-between leading-[3.5rem] rounded-md transition duration-300" x-data="{link: subApp.url}">
                                                             <div class="flex flex-row items-center space-x-3 rtl:flex-row-reverse cursor-default">
                                                                 <span class="font-semibold flex-1 dark:text-gray-200 text-black" x-text="app"></span>
-                                                                <span class="text-sm text-gray-600" x-text="subApp.name"></span>
+                                                                <span :class="subApp.best ? 'dark:text-gray-200 text-gray-800' : 'text-gray-600'" class="text-sm" x-text="subApp.name"></span>
                                                             </div>
                                                             <div class="flex justify-between items-center">
                                                                 <a class="w-8 h-8 cursor-pointer" :href="link" target="_blank">
@@ -352,7 +352,7 @@ function bytesformat($bytes, $precision = 2): string
                             <div class="flex sm:flex-row flex-col">
                                 <div class="sm:basis-1/5 sm:rtl:ml-4 sm:ltr:mr-4">
                                     <ul class="flex sm:flex-col text-sm font-medium text-center" id="vertical-tab" data-tabs-toggle="#tutorials-tabs-content" role="tablist">
-                                        <template x-for="item in Object.getOwnPropertyNames(appsJson)">
+                                        <template x-for="item in Object.keys( appsJson ).filter( ( platform ) => Object.keys( appsJson[ platform ] ).some( ( app ) => appsJson[ platform ][ app ].tutorial !== '' ) )">
                                             <li class="flex-grow mb-2" role="presentation">
                                                 <button class="inline-block p-4 border-b-2 rounded-t-lg w-full transition" :id="item + '-tutorials-tab'" :data-tabs-target="'#' + item + '-tutorials'" type="button" role="tab" :aria-controls="item + '-tutorials'" aria-selected="false" x-text="item"></button>
                                             </li>
@@ -360,10 +360,10 @@ function bytesformat($bytes, $precision = 2): string
                                     </ul>
                                 </div>
                                 <div id="tutorials-tabs-content" class="sm:basis-4/5">
-                                    <template x-for="item in Object.getOwnPropertyNames(appsJson)">
+                                    <template x-for="item in Object.keys(appsJson)">
                                         <div class="hidden" :id="item + '-tutorials'" role="tabpanel" :aria-labelledby="item + '-tutorials-tab'">
                                             <ul class="list-none p-0 m-0">
-                                                <template x-for="app in Object.getOwnPropertyNames(appsJson[item])">
+                                                <template x-for="app in Object.keys(appsJson[item]).reverse()">
                                                     <li class="flex px-3 mb-1 justify-between leading-[3.5rem] hover:bg-black/10 rounded-md hover:shadow-lg transition duration-300">
                                                         <span class="font-semibold flex-1 dark:text-gray-200 text-black cursor-default" x-text="app"></span>
                                                         <div class="flex justify-between items-center">
@@ -387,7 +387,7 @@ function bytesformat($bytes, $precision = 2): string
         </div>
     </div>
 
-    <div id="popup" class="fixed w-fit min-w-[20rem] h-fit p-10 pt-7 shadow-dialog-shadow dark:shadow-2xl rounded-lg top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-main-light dark:bg-main-dark hidden">
+    <div id="popup" class="fixed w-fit min-w-[20rem] max-h-[95vh] h-fit p-10 pt-7 shadow-dialog-shadow dark:shadow-2xl rounded-lg top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-main-light dark:bg-main-dark hidden">
         <h2 class="h-10 leading-[2.5rem] mb-4 inline-block font-semibold text-gray-950 dark:text-white"></h2>
         <a class="close absolute ltr:right-10 rtl:left-10 top-7 text-3xl cursor-pointer dark:text-white text-gray-950">&times;</a>
         <div class="content rounded-lg"></div>
@@ -400,11 +400,14 @@ function bytesformat($bytes, $precision = 2): string
             color: '<?php echo match (true){($dataUsage<40)=>'bg-green-600',($dataUsage<80)=>'bg-yellow-600',default=>'bg-red-500'} ?>'
         };
 
-        let qrSize = $( window ).width() > 500 ? 400 : $( window ).width() - 100;
-        $( window ).resize( function ()
-        {
-            if ( $( window ).width() > 500 ) qrSize = 400;
-            else qrSize = $( window ).width() - 100;
+        let qrSize = $( window ).width() > 500 ? $( window ).height() > 500 ? 400 : $( window ).height() - 200 : $( window ).height() > 500 ? $( window ).width() - 100 : $( window ).height() - 200;
+        $(window).resize(function () {
+            $( window ).resize( function ()
+            if ($(window).width() > 500) qrSize = 400;
+            {
+            else qrSize = $(window).width() - 100;
+                qrSize = $( window ).width() > 500 ? $( window ).height() > 500 ? 400 : $( window ).height() - 200 : $( window ).height() > 500 ? $( window ).width() - 100 : $( window ).height() - 200;
+            });
         } );
 
         const popup = $( "#popup" );
@@ -428,8 +431,8 @@ function bytesformat($bytes, $precision = 2): string
                 const link = $( elem ).attr( "data-link" );
                 $( "#popup > .content" ).addClass( "bg-white p-5" ).html( "" ).qrcode(
                     {
-                        width: qrSize,
-                        height: qrSize,
+                        size: qrSize,
+                        radius: 0.2,
                         text: link,
                         colorDark: "#000000",
                         colorLight: "#ffffff"
@@ -442,17 +445,16 @@ function bytesformat($bytes, $precision = 2): string
             } );
         } );
 
-        $( ".copyAllButton" ).on( 'click', () =>
-        {
+        $(".copyAllButton").on('click', async ( a ) => {
             let links = [];
-            $( ".qr-button" ).each( ( i, ele ) =>
-            {
-                let link = $( ele ).attr( "data-link" );
-                if ( !link.startsWith( "http" ) ) links.push( link );
-            } );
-            navigator.clipboard.writeText( links.join( "\n" ) );
-            alert( AlpineI18n.t( "copyAll" ) );
-        } );
+            $(".qr-button").each((i, ele) => {
+                let link = $(ele).attr("data-link");
+                if (!link.startsWith("http")) links.push(link);
+            });
+            await navigator.clipboard.writeText(links.join("\n"));
+            const thisObj = $(a.target).css("background", "#16a34a");
+            setTimeout( () => thisObj.css( "background", "#2563eb" ), 1500 );
+        });
 
         document.addEventListener( 'alpine:initialized', () =>
         {
@@ -504,8 +506,8 @@ function bytesformat($bytes, $precision = 2): string
 
         function changeTheme ( ele )
         {
-            darkMode = ele.checked ? 1 : 0;
-            localStorage.setItem( "dark", darkMode );
+            settings.darkMode = ele.checked ? 1 : 0;
+            localStorage.setItem("dark", settings.darkMode);
             if ( !ele.checked ) $( document.body ).removeClass( "dark" );
             else $( document.body ).addClass( "dark" );
         }
@@ -522,7 +524,7 @@ function bytesformat($bytes, $precision = 2): string
   <option value="ru"` + ( AlpineI18n.locale === "ru" ? " selected" : "" ) + `>Русский</option>
 </select>
 <label class="relative flex justify-between items-center cursor-pointer">
-  <input type="checkbox" value="" class="sr-only peer"` + ( darkMode === 1 ? " checked" : "" ) + ` onchange="changeTheme(this)">
+  <input type="checkbox" value="" class="sr-only peer"` + (settings.darkMode === 1 ? " checked" : "") + ` onchange="changeTheme(this)">
   <span class="text-sm font-medium text-gray-900 dark:text-white">` + AlpineI18n.t( "darkMode" ) + `</span>
   <div class="w-11 h-6 relative bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
 </label>
