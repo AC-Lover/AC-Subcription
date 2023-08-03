@@ -35,7 +35,7 @@ function bytesformat($bytes, $precision = 2): string
     <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-clipboard@2.2.0/dist/alpine-clipboard.js"></script>
     <script>
         <?php $expireDateInit = empty($user['expire']) ? '∞' : date('Y-m-d H:i:s', $user['expire']); ?>
-        <?php $dataUsage=empty($user['data_limit'])? 100 :(((($user['used_traffic']/$user['data_limit'])*100) < 100 ? number_format($user['used_traffic']/$user['data_limit'], 2) : 100));?>
+        <?php $dataUsage=empty($user['data_limit'])? 100 :(((($user['used_traffic']/$user['data_limit'])*100) < 100 ? number_format(($user['used_traffic']/$user['data_limit'])*100, 2) : 100));?>
         const resetInterval = "<?php echo $user['data_limit_reset_strategy']; ?>";
         <?php $expireDateVar = empty($user['expire']) ? '∞' : date('Y-m-d H:i:s', $user['expire']);?>
 
