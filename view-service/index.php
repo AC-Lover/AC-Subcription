@@ -16,7 +16,6 @@ function bytesformat($bytes, $precision = 2): string
 
     return round($bytes, $precision) . ' ' . $units[$pow];
 }
-
 ?>
 
 <!DOCTYPE html>
