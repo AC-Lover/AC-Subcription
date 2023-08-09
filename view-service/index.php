@@ -256,8 +256,8 @@ let appsJson = {
                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             <span class="text-blue-600 drop-shadow-lg rtl:mr-2 ltr:ml-2" x-text="$t('settings')"></span>
-                            <a class="rounded-md shadow-lg transition duration-300 bg-blue-600 text-white text-center text-lg py-2 w-4/5 cursor-pointer hover:shadow-xl stroke-blue-600" x-text="$t('proxy')" x-show="settings.proxy != ''" x-bind:href="settings.proxy"></a>
                         </span>
+                        <a class="rounded-md shadow-lg transition duration-300 bg-blue-600 text-white text-center text-lg py-2 w-4/5 cursor-pointer hover:shadow-xl stroke-blue-600" x-text="$t('proxy')" x-show="settings.proxy != ''" x-bind:href="settings.proxy"></a>
                     </div>
                     <div class="basis-2/3 flex flex-row items-center sm:ltr:pl-9 sm:rtl:pr-9">
                         <div class="data-usage w-full" x-data="progressBar" x-init="Alpine.data( 'progressBar', () => progressBar )">
