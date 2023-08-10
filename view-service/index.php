@@ -262,8 +262,10 @@ let appsJson = {
                     <div class="basis-2/3 flex flex-row items-center sm:ltr:pl-9 sm:rtl:pr-9">
                         <div class="data-usage w-full" x-data="progressBar" x-init="Alpine.data( 'progressBar', () => progressBar )">
                             <div class="dark:text-white text-black text-center"><span class="font-bold" x-text="$t('dataUsage')"></span><span dir="ltr"><?php echo bytesformat($user['used_traffic']).' / '. (empty($user['data_limit']) ? '∞' : bytesformat($user['data_limit'])); ?></span></div>
-                            <div class="bg-gray-200 dark:bg-gray-900 rounded-full h-6 mt-5 drop-shadow-lg" role="progressbar" :aria-valuenow="width" aria-valuemin="0" aria-valuemax="100">
-                                <div class="progress-bar rounded-full h-6 text-center dark:text-white text-black text-sm transition leading-6" :class="color" :style="`width: ${width}%; transition: width 2s;`" x-text="`${width}%`"></div>
+                            <div class="bg-gray-200 dark:bg-gray-900 rounded-full h-6 mt-5 drop-shadow-lg overflow-hidden" role="progressbar" :aria-valuenow="width" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar rounded-full w-full h-6 text-center dark:text-white text-black text-sm transition leading-6" :class="color" :style="`width: ${width}%; transition: width 2s;`">
+                                    <span class="absolute w-full left-0" x-text="`${width}%`"></span>
+                                </div>
                             </div>
                             <div class="dark:text-white text-black mt-10 text-center"><span class="font-bold" x-text="$t('expirationDate')"></span><span dir="ltr" x-data="{expireDate: ''}" x-init="Alpine.data( 'expireDate', expireDate = '<?=$expireDateVar?>' )" x-text="expireDate"></span></div><!--2023/06/31 10:43:59-->
                             <div class="dark:text-white text-black mt-3 text-sm text-center" x-text="resetInterval == 'year' ? $t('resetIntervalYear') : resetInterval == 'month' ? $t('resetIntervalMonth') : resetInterval == 'week' ? $t('resetIntervalWeek') : resetInterval == 'day' ? $t('resetIntervalDay') : ''"></div>
@@ -378,7 +380,7 @@ let appsJson = {
                                                 <template x-for="app in Object.keys(appsJson[item])">
                                                     <template x-for="subApp in appsJson[item][app].url">
                                                         <li :class="subApp.best ? 'bg-green-600/30 shadow-lg' : 'hover:bg-black/10 hover:shadow-lg'" class="flex px-3 mb-1 justify-between leading-[3.5rem] rounded-md transition duration-300" x-data="{link: subApp.url}">
-                                                            <div class="flex flex-row items-center space-x-3 rtl:flex-row-reverse cursor-default">
+                                                            <div class="flex flex-row items-center space-x-3 rtl:space-x-reverse cursor-default">
                                                                 <span class="font-semibold flex-1 dark:text-gray-200 text-black" x-text="app"></span>
                                                                 <span :class="subApp.best ? 'dark:text-gray-200 text-gray-800' : 'text-gray-600'" class="text-sm" x-text="subApp.name"></span>
                                                             </div>
