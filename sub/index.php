@@ -10,7 +10,11 @@ $isTextHTML=str_contains(($_SERVER['HTTP_ACCEPT']??''),'text/html');
 
 const BASE_URL="https://YOUR_IP:PORT"; // Replace IP address and port
 
-$URL=BASE_URL.$_SERVER['SCRIPT_URL']??'';
+if(isset($_SERVER['SCRIPT_URL']) && !empty($_SERVER['SCRIPT_URL'])) {
+    $URL = BASE_URL.$_SERVER['SCRIPT_URL'];
+} else {
+    $URL = BASE_URL.$_SERVER['REQUEST_URI'];
+}
 $URL .= $isTextHTML?'/info':'';
 
 $ch = curl_init();
